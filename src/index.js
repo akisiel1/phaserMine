@@ -1,9 +1,8 @@
-import "./styles.css";
+var config = {
+  width: 800,
+  height: 600,
+  backgroundColor: 0x000001,
+  scene: [Scene1, Scene2]
+};
 
-document.getElementById("app").innerHTML = `
-<h1>Hello Vanilla!</h1>
-<div>
-  We use Parcel to bundle this sandbox, you can find more info about Parcel
-  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-</div>
-`;
+var game = new Phaser.Game(config);
