@@ -1,11 +1,13 @@
 import Phaser from "phaser";
 
-class Scene1 extends Phaser.Scene {
+export default class Scene1 extends Phaser.Scene {
   constructor() {
     super("bootGame");
   }
   create() {
     this.add.text(20, 20, "Loading game...");
-    this.scene.start("playGame");
+    setTimeout(() => {
+      this.scene.start("playGame");
+    }, 2000);
   }
 }
