@@ -65,10 +65,12 @@ class Scene extends Phaser.Scene {
 
         if (this.ship2.y > this.sceneHeight) {
             this.ship2.y = 0;
+            this.ship2.x = Math.random() * this.sceneWidth;
         }
 
         if (this.ship3.y > this.sceneHeight) {
             this.ship3.y = 0;
+            this.ship3.x = Math.random() * this.sceneWidth;
         }
     }
 }
