@@ -3,6 +3,7 @@ class Scene extends Phaser.Scene {
         super("bootGame");
         this.sceneWidth = 256;
         this.sceneHeight = 272;
+
     }
 
     preload() {
@@ -10,14 +11,16 @@ class Scene extends Phaser.Scene {
         this.load.spritesheet("ship", "assets/hawk.png", {
             frameWidth: 32,
             frameHeight: 32
-          });
+        });
         this.load.image("ship2", "assets/ship2.png");
         this.load.image("ship3", "assets/ship3.png");
     }
 
     create() {
+        this.lives = 3;
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
+        this.scoreText = this.add.text(3, 3, `Lives: ${this.lives}`, { fontSize: '15px', fill: '#000' });
 
         this.ship1 = this.physics.add.sprite(
             this.sceneWidth / 2 - 50,
@@ -30,7 +33,7 @@ class Scene extends Phaser.Scene {
             "ship2"
         );
         this.ship3 = this.physics.add.image(
-            this.sceneWidth/2 + 50,
+            this.sceneWidth / 2 + 50,
             0,
             "ship3"
         );
@@ -49,7 +52,7 @@ class Scene extends Phaser.Scene {
         this.ship1.play("ship_anim");
         this.keys = this.input.keyboard.createCursorKeys();
 
-        
+
         this.physics.add.collider(this.ship1, this.enemiesShips, this.endGame, null, this);
     }
 
@@ -83,6 +86,15 @@ class Scene extends Phaser.Scene {
     }
 
     endGame() {
-        this.scene.start("endgame");
+        this.lives = this.lives - 1;
+
+        if (this.lives <= 0) {
+            this.scene.start("endgame");
+        }
+
+        
+        this.scoreText.setText(`Lives: ${this.lives}`);
+        this.ship1.y = this.sceneHeight / 2;
+        this.ship1.x = this.sceneWidth / 2;
     }
 }
