@@ -14,6 +14,12 @@ class Scene extends Phaser.Scene {
         });
         this.load.image("ship2", "assets/ship2.png");
         this.load.image("ship3", "assets/ship3.png");
+
+
+        this.load.spritesheet("power-up", "assets/power-up.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
     }
 
     create() {
@@ -38,7 +44,6 @@ class Scene extends Phaser.Scene {
             "ship3"
         );
 
-
         this.enemiesShips = this.physics.add.group();
         this.enemiesShips.add(this.ship2);
         this.enemiesShips.add(this.ship3);
@@ -54,6 +59,24 @@ class Scene extends Phaser.Scene {
 
 
         this.physics.add.collider(this.ship1, this.enemiesShips, this.endGame, null, this);
+
+
+        this.physics.world.setBoundsCollision();
+
+        this.powerUps = this.physics.add.group();
+        var maxObjects = 3;
+        for (var i = 0; i <= maxObjects; i++) {
+            var powerUp = this.physics.add.sprite(16, 16, "power-up");
+            this.powerUps.add(powerUp);
+            powerUp.setRandomPosition(0, 0, game.config.width, game.config.height);
+
+            powerUp.setVelocity(100, 100);
+            powerUp.setCollideWorldBounds(true);
+            powerUp.setBounce(1);
+        }
+
+
+        this.physics.add.overlap(this.ship1, this.powerUps, this.powerUp, null, this);
     }
 
     update() {
@@ -92,9 +115,19 @@ class Scene extends Phaser.Scene {
             this.scene.start("endgame");
         }
 
-        
-        this.scoreText.setText(`Lives: ${this.lives}`);
+        this.updateText();
         this.ship1.y = this.sceneHeight / 2;
         this.ship1.x = this.sceneWidth / 2;
+    }
+
+    powerUp(ship, powerUp) {
+        this.lives = this.lives + 1;
+        this.updateText();
+
+        powerUp.disableBody(true, true);
+    }
+
+    updateText() {
+        this.scoreText.setText(`Lives: ${this.lives}`);
     }
 }
