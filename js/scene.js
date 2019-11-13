@@ -19,21 +19,26 @@ class Scene extends Phaser.Scene {
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
 
-        this.ship1 = this.add.sprite(
+        this.ship1 = this.physics.add.sprite(
             this.sceneWidth / 2 - 50,
             this.sceneHeight / 2,
             "ship"
         );
-        this.ship2 = this.add.image(
+        this.ship2 = this.physics.add.image(
             this.sceneWidth / 2,
             0,
             "ship2"
         );
-        this.ship3 = this.add.image(
+        this.ship3 = this.physics.add.image(
             this.sceneWidth/2 + 50,
             0,
             "ship3"
         );
+
+
+        this.enemiesShips = this.physics.add.group();
+        this.enemiesShips.add(this.ship2);
+        this.enemiesShips.add(this.ship3);
 
         this.anims.create({
             key: "ship_anim",
@@ -43,6 +48,9 @@ class Scene extends Phaser.Scene {
         });
         this.ship1.play("ship_anim");
         this.keys = this.input.keyboard.createCursorKeys();
+
+        
+        this.physics.add.collider(this.ship1, this.enemiesShips, this.endGame, null, this);
     }
 
     update() {
@@ -72,5 +80,9 @@ class Scene extends Phaser.Scene {
             this.ship3.y = 0;
             this.ship3.x = Math.random() * this.sceneWidth;
         }
+    }
+
+    endGame() {
+        this.scene.start("endgame");
     }
 }
